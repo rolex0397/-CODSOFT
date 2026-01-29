@@ -1,0 +1,46 @@
+import java.util.Scanner;
+import java.net.URL;
+import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import org.json.JSONObject;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("Enter base currency:");
+        String from = s.next().toUpperCase();
+
+        System.out.println("Enter target currency:");
+        String to = s.next().toUpperCase();
+
+        System.out.println("Enter amount:");
+        double amt = s.nextDouble();
+
+        String api = "https://api.frankfurter.app/latest?from=" + from + "&to=" + to;
+
+        URL u = new URL(api);
+        HttpURLConnection c = (HttpURLConnection) u.openConnection();
+        c.setRequestMethod("GET");
+
+        BufferedReader r = new BufferedReader(new InputStreamReader(c.getInputStream()));
+        String str;
+        String res = "";
+
+        while ((str = r.readLine()) != null) {
+            res = res + str;
+        }
+
+        JSONObject obj = new JSONObject(res);
+        JSONObject rateObj = obj.getJSONObject("rates");
+
+        double rate = rateObj.getDouble(to);
+        double ans = amt * rate;
+
+        System.out.println("Converted amount is: " + ans + " " + to);
+
+        s.close();
+    }
+}
