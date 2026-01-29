@@ -1,0 +1,32 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner reader = new Scanner(System.in);
+        Random rand = new Random();
+        
+        int secret = rand.nextInt(100) + 1;
+        int count = 0;
+
+        System.out.println("I'm thinking of a number between 1 and 100. Can you guess it?");
+
+        while (true) {
+            System.out.print("Enter your guess: ");
+            int myGuess = reader.nextInt();
+            count++;
+
+            if (myGuess == secret) {
+                System.out.println("Wait... you actually got it! 🎯");
+                System.out.println("It only took you " + count + " tries.");
+                break; 
+            } else if (myGuess < secret) {
+                System.out.println("Not quite! My number is higher than that.");
+            } else {
+                System.out.println("A bit too high! Try something lower.");
+            }
+        }
+        
+        reader.close();
+    }
+}
